@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as nm
 import sklearn
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.utils import shuffle
 from sklearn import linear_model, preprocessing
 
@@ -17,6 +18,7 @@ cls = le.fit_transform(list(data["class"]))
 
 predict = "class"
 
+names = ["unacc", "acc", "good", "vgood" ]
 print(data.head())
 print(buying)
 
@@ -31,3 +33,12 @@ x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(X, y
 # that we want to classify, and there are 5 instances of the blue group a bit further away,
 # k's nearest neighbour will classify our point as blue even though it should be red
 
+model = KNeighborsClassifier(n_neighbors=7)
+
+model.fit(x_train, y_train)
+acc = model.score(x_test, y_test)
+print(acc)
+
+predictions = model.predict(x_test)
+for i in range(30):
+    print(names[y_test[i]], names[predictions[i]], "\n")
